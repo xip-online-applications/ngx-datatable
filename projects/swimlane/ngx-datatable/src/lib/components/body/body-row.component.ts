@@ -129,6 +129,7 @@ export class DataTableBodyRowComponent implements DoCheck {
 
   @HostBinding('style.width.px')
   get columnsTotalWidths(): string {
+    // hack by XIP
     return this._innerWidth.toString();
   }
 
