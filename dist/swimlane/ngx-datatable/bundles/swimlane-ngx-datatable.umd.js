@@ -4861,10 +4861,9 @@
             enumerable: false,
             configurable: true
         });
-        Object.defineProperty(DataTableBodyRowComponent.prototype, "columnsTotalWidths", {
+        Object.defineProperty(DataTableBodyRowComponent.prototype, "rowStyles", {
             get: function () {
-                // hack by XIP
-                return this._innerWidth.toString();
+                return this.calcRowStyles();
             },
             enumerable: false,
             configurable: true
@@ -4886,6 +4885,17 @@
             this._groupStyles.right = this.calcStylesByGroup('right');
             this.cd.markForCheck();
         };
+        DataTableBodyRowComponent.prototype.calcRowStyles = function () {
+            var width = this.innerWidth;
+            var height = this.rowHeight;
+            var offsetX = this.offsetX;
+            var styles = {
+                width: width + "px",
+                height: height + "px"
+            };
+            translateXY(styles, offsetX, 0);
+            return styles;
+        };
         DataTableBodyRowComponent.prototype.calcStylesByGroup = function (group) {
             var widths = this._columnGroupWidths;
             var offsetX = this.offsetX;
@@ -4893,14 +4903,17 @@
                 width: widths[group] + "px"
             };
             if (group === 'left') {
-                translateXY(styles, offsetX, 0);
+                // translateXY(styles, offsetX, 0);
             }
             else if (group === 'right') {
                 var bodyWidth = parseInt(this.innerWidth + '', 0);
                 var totalDiff = widths.total - bodyWidth;
                 var offsetDiff = totalDiff - offsetX;
                 var offset = (offsetDiff + this.scrollbarHelper.width) * -1;
-                translateXY(styles, offset, 0);
+                translateXY(styles, offset - offsetX, 0);
+            }
+            else {
+                translateXY(styles, -offsetX, 0);
             }
             return styles;
         };
@@ -4974,8 +4987,8 @@
         treeStatus: [{ type: core.Input }],
         offsetX: [{ type: core.Input }],
         cssClass: [{ type: core.HostBinding, args: ['class',] }],
-        rowHeight: [{ type: core.HostBinding, args: ['style.height.px',] }, { type: core.Input }],
-        columnsTotalWidths: [{ type: core.HostBinding, args: ['style.width.px',] }],
+        rowHeight: [{ type: core.Input }],
+        rowStyles: [{ type: core.HostBinding, args: ['style',] }],
         activate: [{ type: core.Output }],
         treeAction: [{ type: core.Output }],
         onKeyDown: [{ type: core.HostListener, args: ['keydown', ['$event'],] }],

@@ -4242,9 +4242,8 @@ class DataTableBodyRowComponent {
         }
         return cls;
     }
-    get columnsTotalWidths() {
-        // hack by XIP
-        return this._innerWidth.toString();
+    get rowStyles() {
+        return this.calcRowStyles();
     }
     ngDoCheck() {
         if (this._rowDiffer.diff(this.row)) {
@@ -4263,6 +4262,17 @@ class DataTableBodyRowComponent {
         this._groupStyles.right = this.calcStylesByGroup('right');
         this.cd.markForCheck();
     }
+    calcRowStyles() {
+        const width = this.innerWidth;
+        const height = this.rowHeight;
+        const offsetX = this.offsetX;
+        const styles = {
+            width: `${width}px`,
+            height: `${height}px`
+        };
+        translateXY(styles, offsetX, 0);
+        return styles;
+    }
     calcStylesByGroup(group) {
         const widths = this._columnGroupWidths;
         const offsetX = this.offsetX;
@@ -4270,14 +4280,17 @@ class DataTableBodyRowComponent {
             width: `${widths[group]}px`
         };
         if (group === 'left') {
-            translateXY(styles, offsetX, 0);
+            // translateXY(styles, offsetX, 0);
         }
         else if (group === 'right') {
             const bodyWidth = parseInt(this.innerWidth + '', 0);
             const totalDiff = widths.total - bodyWidth;
             const offsetDiff = totalDiff - offsetX;
             const offset = (offsetDiff + this.scrollbarHelper.width) * -1;
-            translateXY(styles, offset, 0);
+            translateXY(styles, offset - offsetX, 0);
+        }
+        else {
+            translateXY(styles, -offsetX, 0);
         }
         return styles;
     }
@@ -4373,8 +4386,8 @@ DataTableBodyRowComponent.propDecorators = {
     treeStatus: [{ type: Input }],
     offsetX: [{ type: Input }],
     cssClass: [{ type: HostBinding, args: ['class',] }],
-    rowHeight: [{ type: HostBinding, args: ['style.height.px',] }, { type: Input }],
-    columnsTotalWidths: [{ type: HostBinding, args: ['style.width.px',] }],
+    rowHeight: [{ type: Input }],
+    rowStyles: [{ type: HostBinding, args: ['style',] }],
     activate: [{ type: Output }],
     treeAction: [{ type: Output }],
     onKeyDown: [{ type: HostListener, args: ['keydown', ['$event'],] }],

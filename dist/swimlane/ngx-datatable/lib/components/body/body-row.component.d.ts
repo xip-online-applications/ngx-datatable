@@ -21,7 +21,10 @@ export declare class DataTableBodyRowComponent implements DoCheck {
     get offsetX(): number;
     get cssClass(): string;
     rowHeight: number;
-    get columnsTotalWidths(): string;
+    get rowStyles(): {
+        width: string;
+        height: string;
+    };
     activate: EventEmitter<any>;
     treeAction: EventEmitter<any>;
     _element: any;
@@ -39,6 +42,10 @@ export declare class DataTableBodyRowComponent implements DoCheck {
     trackByGroups(index: number, colGroup: any): any;
     columnTrackingFn(index: number, column: any): any;
     buildStylesByGroup(): void;
+    calcRowStyles(): {
+        width: string;
+        height: string;
+    };
     calcStylesByGroup(group: string): {
         width: string;
     };

@@ -123,14 +123,12 @@ export class DataTableBodyRowComponent implements DoCheck {
     return cls;
   }
 
-  @HostBinding('style.height.px')
   @Input()
   rowHeight: number;
 
-  @HostBinding('style.width.px')
-  get columnsTotalWidths(): string {
-    // hack by XIP
-    return this._innerWidth.toString();
+  @HostBinding('style')
+  get rowStyles() {
+    return this.calcRowStyles();
   }
 
   @Output() activate: EventEmitter<any> = new EventEmitter();
@@ -181,6 +179,21 @@ export class DataTableBodyRowComponent implements DoCheck {
     this.cd.markForCheck();
   }
 
+  calcRowStyles() {
+    const width = this.innerWidth;
+    const height = this.rowHeight;
+    const offsetX = this.offsetX;
+
+    const styles = {
+      width: `${width}px`,
+      height: `${height}px`
+    };
+
+    translateXY(styles, offsetX, 0);
+
+    return styles;
+  }
+
   calcStylesByGroup(group: string) {
     const widths = this._columnGroupWidths;
     const offsetX = this.offsetX;
@@ -190,13 +203,15 @@ export class DataTableBodyRowComponent implements DoCheck {
     };
 
     if (group === 'left') {
-      translateXY(styles, offsetX, 0);
+      // translateXY(styles, offsetX, 0);
     } else if (group === 'right') {
       const bodyWidth = parseInt(this.innerWidth + '', 0);
       const totalDiff = widths.total - bodyWidth;
       const offsetDiff = totalDiff - offsetX;
       const offset = (offsetDiff + this.scrollbarHelper.width) * -1;
-      translateXY(styles, offset, 0);
+      translateXY(styles, offset - offsetX, 0);
+    } else {
+      translateXY(styles, -offsetX, 0);
     }
 
     return styles;
