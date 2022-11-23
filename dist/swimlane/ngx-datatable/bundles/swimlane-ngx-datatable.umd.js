@@ -2355,7 +2355,7 @@
                 // The position of this row would be the sum of all row heights
                 // until the previous row position.
                 var pos = this.rowHeightsCache.query(idx - 1);
-                translateXY(styles, 0, pos);
+                translateXY(styles, this.offsetX, pos);
             }
             return styles;
         };
@@ -4863,7 +4863,9 @@
         });
         Object.defineProperty(DataTableBodyRowComponent.prototype, "rowStyles", {
             get: function () {
-                return this.calcRowStyles();
+                var styles = this.calcRowStyles();
+                console.log(styles);
+                return styles;
             },
             enumerable: false,
             configurable: true
@@ -4888,12 +4890,12 @@
         DataTableBodyRowComponent.prototype.calcRowStyles = function () {
             var width = this.innerWidth;
             var height = this.rowHeight;
-            var offsetX = this.offsetX;
+            // const offsetX = this.offsetX;
             var styles = {
                 width: width + "px",
                 height: height + "px"
             };
-            translateXY(styles, offsetX, 0);
+            translateXY(styles, 0, 0);
             return styles;
         };
         DataTableBodyRowComponent.prototype.calcStylesByGroup = function (group) {

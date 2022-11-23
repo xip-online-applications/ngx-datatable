@@ -1331,10 +1331,11 @@
             return cls;
           }
         }, {
-          key: "columnsTotalWidths",
+          key: "rowStyles",
           get: function get() {
-            // hack by XIP
-            return this._innerWidth.toString();
+            var styles = this.calcRowStyles();
+            console.log(styles);
+            return styles;
           }
         }, {
           key: "ngDoCheck",
@@ -1362,6 +1363,19 @@
             this.cd.markForCheck();
           }
         }, {
+          key: "calcRowStyles",
+          value: function calcRowStyles() {
+            var width = this.innerWidth;
+            var height = this.rowHeight; // const offsetX = this.offsetX;
+
+            var styles = {
+              width: "".concat(width, "px"),
+              height: "".concat(height, "px")
+            };
+            (0, _utils_translate__WEBPACK_IMPORTED_MODULE_2__.translateXY)(styles, 0, 0);
+            return styles;
+          }
+        }, {
           key: "calcStylesByGroup",
           value: function calcStylesByGroup(group) {
             var widths = this._columnGroupWidths;
@@ -1370,14 +1384,15 @@
               width: "".concat(widths[group], "px")
             };
 
-            if (group === 'left') {
-              (0, _utils_translate__WEBPACK_IMPORTED_MODULE_2__.translateXY)(styles, offsetX, 0);
+            if (group === 'left') {// translateXY(styles, offsetX, 0);
             } else if (group === 'right') {
               var bodyWidth = parseInt(this.innerWidth + '', 0);
               var totalDiff = widths.total - bodyWidth;
               var offsetDiff = totalDiff - offsetX;
               var offset = (offsetDiff + this.scrollbarHelper.width) * -1;
-              (0, _utils_translate__WEBPACK_IMPORTED_MODULE_2__.translateXY)(styles, offset, 0);
+              (0, _utils_translate__WEBPACK_IMPORTED_MODULE_2__.translateXY)(styles, offset - offsetX, 0);
+            } else {
+              (0, _utils_translate__WEBPACK_IMPORTED_MODULE_2__.translateXY)(styles, -offsetX, 0);
             }
 
             return styles;
@@ -1443,7 +1458,7 @@
       _DataTableBodyRowComponent.ɵcmp = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵdefineComponent"]({
         type: _DataTableBodyRowComponent,
         selectors: [["datatable-body-row"]],
-        hostVars: 6,
+        hostVars: 4,
         hostBindings: function DataTableBodyRowComponent_HostBindings(rf, ctx) {
           if (rf & 1) {
             _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵlistener"]("keydown", function DataTableBodyRowComponent_keydown_HostBindingHandler($event) {
@@ -1454,9 +1469,9 @@
           }
 
           if (rf & 2) {
-            _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵclassMap"](ctx.cssClass);
+            _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵstyleMap"](ctx.rowStyles);
 
-            _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵstyleProp"]("height", ctx.rowHeight, "px")("width", ctx.columnsTotalWidths, "px");
+            _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵclassMap"](ctx.cssClass);
           }
         },
         inputs: {
@@ -2222,7 +2237,7 @@
 
 
               var pos = this.rowHeightsCache.query(idx - 1);
-              (0, _utils_translate__WEBPACK_IMPORTED_MODULE_3__.translateXY)(styles, 0, pos);
+              (0, _utils_translate__WEBPACK_IMPORTED_MODULE_3__.translateXY)(styles, this.offsetX, pos);
             }
 
             return styles;

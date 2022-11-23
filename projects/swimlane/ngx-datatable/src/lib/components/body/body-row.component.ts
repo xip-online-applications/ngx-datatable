@@ -128,7 +128,9 @@ export class DataTableBodyRowComponent implements DoCheck {
 
   @HostBinding('style')
   get rowStyles() {
-    return this.calcRowStyles();
+    let styles = this.calcRowStyles();
+    console.log(styles);
+    return styles;
   }
 
   @Output() activate: EventEmitter<any> = new EventEmitter();
@@ -182,14 +184,14 @@ export class DataTableBodyRowComponent implements DoCheck {
   calcRowStyles() {
     const width = this.innerWidth;
     const height = this.rowHeight;
-    const offsetX = this.offsetX;
+    // const offsetX = this.offsetX;
 
     const styles = {
       width: `${width}px`,
       height: `${height}px`
     };
 
-    translateXY(styles, offsetX, 0);
+    translateXY(styles, 0, 0);
 
     return styles;
   }

@@ -1843,7 +1843,7 @@ class DataTableBodyComponent {
             // The position of this row would be the sum of all row heights
             // until the previous row position.
             const pos = this.rowHeightsCache.query(idx - 1);
-            translateXY(styles, 0, pos);
+            translateXY(styles, this.offsetX, pos);
         }
         return styles;
     }
@@ -4243,7 +4243,9 @@ class DataTableBodyRowComponent {
         return cls;
     }
     get rowStyles() {
-        return this.calcRowStyles();
+        let styles = this.calcRowStyles();
+        console.log(styles);
+        return styles;
     }
     ngDoCheck() {
         if (this._rowDiffer.diff(this.row)) {
@@ -4265,12 +4267,12 @@ class DataTableBodyRowComponent {
     calcRowStyles() {
         const width = this.innerWidth;
         const height = this.rowHeight;
-        const offsetX = this.offsetX;
+        // const offsetX = this.offsetX;
         const styles = {
             width: `${width}px`,
             height: `${height}px`
         };
-        translateXY(styles, offsetX, 0);
+        translateXY(styles, 0, 0);
         return styles;
     }
     calcStylesByGroup(group) {

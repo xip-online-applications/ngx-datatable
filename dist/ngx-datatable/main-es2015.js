@@ -771,9 +771,10 @@ class DataTableBodyRowComponent {
         }
         return cls;
     }
-    get columnsTotalWidths() {
-        // hack by XIP
-        return this._innerWidth.toString();
+    get rowStyles() {
+        let styles = this.calcRowStyles();
+        console.log(styles);
+        return styles;
     }
     ngDoCheck() {
         if (this._rowDiffer.diff(this.row)) {
@@ -792,6 +793,17 @@ class DataTableBodyRowComponent {
         this._groupStyles.right = this.calcStylesByGroup('right');
         this.cd.markForCheck();
     }
+    calcRowStyles() {
+        const width = this.innerWidth;
+        const height = this.rowHeight;
+        // const offsetX = this.offsetX;
+        const styles = {
+            width: `${width}px`,
+            height: `${height}px`
+        };
+        (0,_utils_translate__WEBPACK_IMPORTED_MODULE_2__.translateXY)(styles, 0, 0);
+        return styles;
+    }
     calcStylesByGroup(group) {
         const widths = this._columnGroupWidths;
         const offsetX = this.offsetX;
@@ -799,14 +811,17 @@ class DataTableBodyRowComponent {
             width: `${widths[group]}px`
         };
         if (group === 'left') {
-            (0,_utils_translate__WEBPACK_IMPORTED_MODULE_2__.translateXY)(styles, offsetX, 0);
+            // translateXY(styles, offsetX, 0);
         }
         else if (group === 'right') {
             const bodyWidth = parseInt(this.innerWidth + '', 0);
             const totalDiff = widths.total - bodyWidth;
             const offsetDiff = totalDiff - offsetX;
             const offset = (offsetDiff + this.scrollbarHelper.width) * -1;
-            (0,_utils_translate__WEBPACK_IMPORTED_MODULE_2__.translateXY)(styles, offset, 0);
+            (0,_utils_translate__WEBPACK_IMPORTED_MODULE_2__.translateXY)(styles, offset - offsetX, 0);
+        }
+        else {
+            (0,_utils_translate__WEBPACK_IMPORTED_MODULE_2__.translateXY)(styles, -offsetX, 0);
         }
         return styles;
     }
@@ -853,11 +868,11 @@ class DataTableBodyRowComponent {
     }
 }
 DataTableBodyRowComponent.ɵfac = function DataTableBodyRowComponent_Factory(t) { return new (t || DataTableBodyRowComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵdirectiveInject"](_angular_core__WEBPACK_IMPORTED_MODULE_5__.KeyValueDiffers), _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵdirectiveInject"](_services_scrollbar_helper_service__WEBPACK_IMPORTED_MODULE_3__.ScrollbarHelper, 4), _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵdirectiveInject"](_angular_core__WEBPACK_IMPORTED_MODULE_5__.ChangeDetectorRef), _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵdirectiveInject"](_angular_core__WEBPACK_IMPORTED_MODULE_5__.ElementRef)); };
-DataTableBodyRowComponent.ɵcmp = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵdefineComponent"]({ type: DataTableBodyRowComponent, selectors: [["datatable-body-row"]], hostVars: 6, hostBindings: function DataTableBodyRowComponent_HostBindings(rf, ctx) { if (rf & 1) {
+DataTableBodyRowComponent.ɵcmp = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵdefineComponent"]({ type: DataTableBodyRowComponent, selectors: [["datatable-body-row"]], hostVars: 4, hostBindings: function DataTableBodyRowComponent_HostBindings(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵlistener"]("keydown", function DataTableBodyRowComponent_keydown_HostBindingHandler($event) { return ctx.onKeyDown($event); })("mouseenter", function DataTableBodyRowComponent_mouseenter_HostBindingHandler($event) { return ctx.onMouseenter($event); });
     } if (rf & 2) {
+        _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵstyleMap"](ctx.rowStyles);
         _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵclassMap"](ctx.cssClass);
-        _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵstyleProp"]("height", ctx.rowHeight, "px")("width", ctx.columnsTotalWidths, "px");
     } }, inputs: { columns: "columns", innerWidth: "innerWidth", expanded: "expanded", rowClass: "rowClass", row: "row", group: "group", isSelected: "isSelected", rowIndex: "rowIndex", displayCheck: "displayCheck", treeStatus: "treeStatus", offsetX: "offsetX", rowHeight: "rowHeight" }, outputs: { activate: "activate", treeAction: "treeAction" }, decls: 1, vars: 2, consts: [[3, "class", "ngStyle", 4, "ngFor", "ngForOf", "ngForTrackBy"], [3, "ngStyle"], ["role", "cell", "tabindex", "-1", 3, "row", "group", "expanded", "isSelected", "rowIndex", "column", "rowHeight", "displayCheck", "treeStatus", "activate", "treeAction", 4, "ngFor", "ngForOf", "ngForTrackBy"], ["role", "cell", "tabindex", "-1", 3, "row", "group", "expanded", "isSelected", "rowIndex", "column", "rowHeight", "displayCheck", "treeStatus", "activate", "treeAction"]], template: function DataTableBodyRowComponent_Template(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵtemplate"](0, DataTableBodyRowComponent_div_0_Template, 2, 6, "div", 0);
     } if (rf & 2) {
@@ -1323,7 +1338,7 @@ class DataTableBodyComponent {
             // The position of this row would be the sum of all row heights
             // until the previous row position.
             const pos = this.rowHeightsCache.query(idx - 1);
-            (0,_utils_translate__WEBPACK_IMPORTED_MODULE_3__.translateXY)(styles, 0, pos);
+            (0,_utils_translate__WEBPACK_IMPORTED_MODULE_3__.translateXY)(styles, this.offsetX, pos);
         }
         return styles;
     }
