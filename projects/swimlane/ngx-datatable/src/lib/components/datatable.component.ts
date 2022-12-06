@@ -892,6 +892,7 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
    * The body triggered a scroll event.
    */
   onBodyScroll(event: MouseEvent): void {
+    console.log('onBodyScroll', event);
     this._offsetX.next(event.offsetX);
     this.scroll.emit(event);
     this.cd.detectChanges();

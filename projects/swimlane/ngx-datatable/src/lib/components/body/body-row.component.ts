@@ -128,9 +128,7 @@ export class DataTableBodyRowComponent implements DoCheck {
 
   @HostBinding('style')
   get rowStyles() {
-    let styles = this.calcRowStyles();
-    console.log(styles);
-    return styles;
+    return this.calcRowStyles();
   }
 
   @Output() activate: EventEmitter<any> = new EventEmitter();
