@@ -189,7 +189,7 @@ export class DataTableBodyRowComponent implements DoCheck {
       height: `${height}px`
     };
 
-    translateXY(styles, 0, 0);
+    translateXY(styles, 0, 1);
 
     return styles;
   }
