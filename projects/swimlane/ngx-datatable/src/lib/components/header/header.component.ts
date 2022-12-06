@@ -327,11 +327,11 @@ export class DataTableHeaderComponent implements OnDestroy {
     };
 
     if (group === 'center') {
-      translateXY(styles, offsetX * -1, 0);
+      translateXY(styles, offsetX * -1, 0, 0);
     } else if (group === 'right') {
       const totalDiff = widths.total - this.innerWidth;
       const offset = totalDiff * -1;
-      translateXY(styles, offset, 0);
+      translateXY(styles, offset, 0, 0);
     }
 
     return styles;

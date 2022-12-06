@@ -189,7 +189,7 @@ export class DataTableBodyRowComponent implements DoCheck {
       height: `${height}px`
     };
 
-    translateXY(styles, 0, 1);
+    translateXY(styles, 0, 0, 1);
 
     return styles;
   }
@@ -209,9 +209,9 @@ export class DataTableBodyRowComponent implements DoCheck {
       const totalDiff = widths.total - bodyWidth;
       const offsetDiff = totalDiff - offsetX;
       const offset = (offsetDiff + this.scrollbarHelper.width) * -1;
-      translateXY(styles, offset - offsetX, 0);
+      translateXY(styles, offset - offsetX, 0, 0);
     } else {
-      translateXY(styles, -offsetX, 0);
+      translateXY(styles, -offsetX, 0, 0);
     }
 
     return styles;

@@ -544,9 +544,9 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
       // until the previous row position.
       const pos = this.rowHeightsCache.query(idx - 1 + 1);
 
-      translateXY(styles, this.offsetX, pos);
+      translateXY(styles, this.offsetX, pos, 1);
     } else {
-      translateXY(styles, this.offsetX, 1);
+      translateXY(styles, this.offsetX, 0, 1);
     }
 
     return styles;
@@ -569,7 +569,7 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
     const styles = { position: 'absolute' };
     const pos = this.rowHeightsCache.query(this.rows.length - 1);
 
-    translateXY(styles, 0, pos);
+    translateXY(styles, 0, pos, 0);
 
     return styles;
   }
@@ -755,13 +755,13 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
     };
 
     if (group === 'left') {
-      translateXY(styles, offsetX, 0);
+      translateXY(styles, offsetX, 0, 0);
     } else if (group === 'right') {
       const bodyWidth = parseInt(this.innerWidth + '', 0);
       const totalDiff = widths.total - bodyWidth;
       const offsetDiff = totalDiff - offsetX;
       const offset = offsetDiff * -1;
-      translateXY(styles, offset, 0);
+      translateXY(styles, offset, 0, 0);
     }
 
     return styles;
