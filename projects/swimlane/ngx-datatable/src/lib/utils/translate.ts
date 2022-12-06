@@ -15,7 +15,7 @@ export function translateXY(styles: any, x: number, y: number, z: number) {
       styles[transform] = `translate3d(${x}px, ${y}px, 0)`;
       styles[backfaceVisibility] = 'hidden';
     } else {
-      styles[camelCase(transform)] = `translate(${x}px, ${y}px), ${z}px`;
+      styles[camelCase(transform)] = `translate(${x}px, ${y}px, ${z}px)`;
     }
   } else {
     styles.top = `${y}px`;
